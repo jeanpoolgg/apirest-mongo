@@ -1,11 +1,32 @@
 const express = require("express");
 const router = express.Router();
-const { getItems, createItem} = require("../controllers/tracks");
-const { validatorCreateItem } = require("../validators/tracks");
-const customHeader = require("../middleware/customHeader")
+const { getItems, createItem, getItem, updateItem, deleteItem} = require("../controllers/tracks");
+const { validatorCreateItem, validatorGetItem } = require("../validators/tracks");
+const customHeader = require("../middleware/customHeader");
 
+/**
+ * Lis los items
+ */
+router.get("/", getItems);
 
-router.get("/", getItems)
-router.post("/", validatorCreateItem, customHeader, createItem)
+/**
+ * Obtener un detalle de item
+ */
+router.get("/:id", validatorGetItem,  getItem);
 
-module.exports = router
+/**
+ * Crea un registro
+ */
+router.post("/", validatorCreateItem, customHeader, createItem);
+
+/**
+ * Actualizar un registro
+ */
+router.put("/:id", validatorGetItem, validatorCreateItem, updateItem);
+
+/**
+ * Eliminar un registro
+ */
+router.delete("/:id", validatorGetItem, deleteItem);
+
+module.exports = router;
